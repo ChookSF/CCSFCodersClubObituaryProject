@@ -5,15 +5,15 @@ import java.util.*;
 
 public class ObitMain   
 {
-   public static void main(String[] args) throws IOException 
+   public static void main(String[] args) 
    {
       File[] dataDirs, obitFiles;
       ArrayList<Obit> obits = new ArrayList<Obit>();
       String monthsList[] = mkMonthListArray();
 
       // get list of directories in the data folder
-  //  String obitDataDir = "C:\\Users\\Chuck\\Dropbox\\workspace\\Obits\\src\\ObitDataFiles";
-      String obitDataDir = "/home/chuck/Dropbox/workspace/Obits/src/ObitDataFiles";
+    String obitDataDir = "C:\\Users\\Chuck\\Dropbox\\workspace\\Obits\\src\\ObitDataFiles";
+  //    String obitDataDir = "/home/chuck/Dropbox/workspace/Obits/src/ObitDataFiles";
       File dataDir = new File(obitDataDir);
      
       dataDirs = dataDir.listFiles();
@@ -28,10 +28,14 @@ public class ObitMain
          obitFiles = f.listFiles();
 
          for (File obit : obitFiles)
+         {
+        	 System.out.println(obit.getName());
+         
         	 obits.add(new Obit(obit));
+         }
       }
       
-     // Print out data about each obituary
+      // Print out data about each obituary
       for (Obit obit : obits) 
       {
     	  Calendar date = obit.getDate();
@@ -42,7 +46,7 @@ public class ObitMain
     	  
     	  System.out.println(obit.getName() + " " + dateStr +
     			             "  " + obit.getPubDate() + " -- -- -- "+obit.getObitText());
-      } 
+      }
       
     //  System.out.println("Death Toll: " + obits.size());
       
@@ -53,18 +57,24 @@ public class ObitMain
       
       
       
-      // Tally the words in all the obituaries
-   
+      // Tally the words in all the abutters
+       
       HashMap<String, Integer> tally = new HashMap<String, Integer>();
   	  TreeMap<String, Integer> sortedTally = new TreeMap<String, Integer>();
   	  
       tally = tallyWordCounts(obits);
       sortedTally.putAll(tally);
-  /*    
+      
+      /*
       for (String word : sortedTally.keySet()) 
     	  if (tally.get(word) > 5)
     	     System.out.println(word + " - " + sortedTally.get(word));
-*/
+  */
+      
+      
+      
+      
+      
    }
    
    private static HashMap<String, Integer> tallyWordCounts(ArrayList<Obit> obits)

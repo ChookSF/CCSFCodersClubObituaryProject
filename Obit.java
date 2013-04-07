@@ -2,6 +2,9 @@
 import java.io.*;
 import java.util.*;
 
+
+
+
 class Obit
 {
    private String filename;
@@ -16,7 +19,7 @@ class Obit
    private String monthStr;
 
 
-   Obit(File f) throws IOException
+   Obit(File f)
    {
       setFilename(f.getName());
       setFilepath(f.getPath());
@@ -33,24 +36,8 @@ class Obit
       
       name = filename.substring(9, filename.length() - 4);
       String fileText = "";
-      Scanner sc;  
-      
-      FileReader inputStream = null;
-   /*   
+      Scanner sc;    
       try
-      {
-    	  inputStream = new FileReader(f);
-    	  
-    	  int c;
-    	  while ((c = inputStream.read()) != -1)
-    	     fileText += 'x';
-      }
-      finally { if (inputStream != null) inputStream.close();}
-     */ 
-      
-      
-      
-     try
       {
          sc = new Scanner(f);
          while (sc.hasNext())
@@ -70,30 +57,13 @@ class Obit
        setObitText(fileText.replace('\n', ' '));
 
     this.obitText = fileText.toLowerCase();
-  //  this.obitText = cleanText(obitText);
-
     this.obitText = obitText.replaceAll("[.,:!;\"{}()?]", "");
     this.obitText = obitText.trim();
     this.wordCount = setWordCount(obitText);
             
    }
 
-   private String cleanText(String txt) 
-   {
-	   int n = txt.length();
-	   String str = "";
-	   
-	   for (int i = 0; i < n; i++)
-	   {
-		   if (txt.charAt(i) > 31 && txt.charAt(i) < 127)
-			   str += txt.charAt(i);
-		   else 
-			   str += ' ';
-	   }
-	return str;
-}
-
-private HashMap<String, Integer> setWordCount(String txt)
+   private HashMap<String, Integer> setWordCount(String txt)
    {
       String[] words = txt.split(" ");
       HashMap<String, Integer> cnt = new HashMap<String, Integer>();
