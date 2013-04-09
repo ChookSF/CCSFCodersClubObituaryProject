@@ -2,11 +2,9 @@
 import java.io.*;
 import java.util.*;
 
-
-
-
 class Obit
 {
+// Declare attributes for the Obit Class
    private String filename;
    private String filepath;
    private String name;
@@ -19,22 +17,31 @@ class Obit
    private String monthStr;
 
 
-   Obit(File f)
+   Obit(File f)    // **** Constructor *****
    {
+	  // Set the data file information
       setFilename(f.getName());
       setFilepath(f.getPath());
       
-      pubDate = filename.substring(0,8);
-      int year = Integer.parseInt(pubDate.substring(0,4));
+      // Gather date information
+      // date info can be accesed by int, string or Calendar class 
+      // so we can decide how to use it later.
+      pubDate   = filename.substring(0,8);
+      int year  = Integer.parseInt(pubDate.substring(0,4));
       int month = Integer.parseInt(pubDate.substring(4,6));
-      int day = Integer.parseInt(pubDate.substring(6));
- 
+      int day   = Integer.parseInt(pubDate.substring(6));
       String datestr = (year + "/" + month + "/" + day);
-      monthStr = (month + "/" + year);
+      String leadingZed = "";
+      if (month < 10) leadingZed = "0";
+      monthStr = ( year + "/" +leadingZed + month);
       date.clear();
       date.set(year, month, day);
       
+      // get the name of the deceased 
       name = filename.substring(9, filename.length() - 4);
+      name = name.replace(".jpg", "");
+      
+      // Get the text of the obituary and load it into the class
       String fileText = "";
       Scanner sc;    
       try
@@ -54,15 +61,19 @@ class Obit
       // System.out.println(fileText); 
       // System.out.println(date);
       
-       setObitText(fileText.replace('\n', ' '));
+      // remove the newline charcaters so the text is one long string
+      setObitText(fileText.replace('\n', ' '));
 
-    this.obitText = fileText.toLowerCase();
-    this.obitText = obitText.replaceAll("[.,:!;\"{}()?]", "");
-    this.obitText = obitText.trim();
-    this.wordCount = setWordCount(obitText);
-            
+      // clean the text so it is easier to handle
+      this.obitText = fileText.toLowerCase();
+      this.obitText = obitText.replaceAll("[.'&,:!;\"{}()?]", "");
+      this.obitText = obitText.trim();
+      this.wordCount = setWordCount(obitText);          
    }
 
+   
+   // This method returns a hash map that has all of the words in the
+   // obituary and how many times they appear.
    private HashMap<String, Integer> setWordCount(String txt)
    {
       String[] words = txt.split(" ");
@@ -70,24 +81,19 @@ class Obit
 
       for (String word : words)
       {
-    	 if(! word.equals(" ") || ! word.equals(null))
+         if(cnt.containsKey(word))
          {
-    	    if(cnt.containsKey(word))
-            {
-               int n = cnt.get(word);
-               n++;
-               cnt.put(word, n);
-            }
-            else 
-               cnt.put(word, 1);
+            int n = cnt.get(word);
+            n++;
+            cnt.put(word, n);
          }
-    	 cnt.remove("");
-    	 cnt.remove("-");
-    	 
+         else 
+            cnt.put(word, 1);    	 
       }
       return cnt;
    }
 
+   // The toString method is to print out the Obit object as needed
    public String toString()
    {
       HashMap<String, Integer> wordCount = getWordCount();
@@ -106,6 +112,8 @@ class Obit
       return (str);
    }
 
+   // *** SETTERS AND GETTERS ****
+   
    public String getFilename() {return filename;}
    public String getFilepath() {return filepath;}
    public String getName() {return name;}
@@ -126,5 +134,5 @@ class Obit
    public void setWordCount(HashMap<String, Integer> wordCount) {this.wordCount = wordCount;}
    public void setAdjustedWordCount(HashMap<String, Integer> adjustedWordCount) {this.adjustedWordCount = adjustedWordCount;}
    public void setDate(Calendar date) {this.date = date;}
-   public void setMonthStr(String str) {this.monthStr = monthStr;}
+   public void setMonthStr(String monthStr) {this.monthStr = monthStr;}
 }
