@@ -12,7 +12,7 @@ public class ObitProjLaunch
 			{
 				public void run() //implement run
 				{
-					
+					new ObitFrame();
 				}
 			});
 		} 
