@@ -6,6 +6,6 @@ public class WordListTab extends JPanel
 {
 	public WordListTab()
 	{
-		
+		//added comments 
 	}
 }
